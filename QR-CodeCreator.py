@@ -1,7 +1,7 @@
-import tkinter as tk
 from tkinter import filedialog
+from PIL import ImageTk, Image
 import tkinter.messagebox
-import ttk
+import tkinter as tk
 import qrcode
 import webbrowser
 
@@ -29,8 +29,8 @@ def custom_button(x,y,text,bcolor,fcolor,downloader):
     create_button.bind("<Leave>", on_leave)
     create_button.place(x=x, y=y)
 
-def create_qrcode():
-        qr = qrcode.QRCode(version=1, box_size=10, border=5)
+def create_qrcode(versions):
+        qr = qrcode.QRCode(version=versions, box_size=10, border=5)
         data_qrcode = str(data.get())
         qr.add_data(data_qrcode)
         qr.make(fit=True)
@@ -42,12 +42,27 @@ def create():
     if data.get() == "":
         tkinter.messagebox.showerror("Error","Please enter a link")
     else:
-        create_qrcode()
+        create_qrcode(version.get())
 
 def creator_link(url):
     webbrowser.open_new(url)
 
-# Labels, Buttons, Entry
+def click(value):
+    test_label = tk.Label(window, text=value)
+    test_label.place(x=300,y=330)
+
+# Labels, Buttons, Entry & More
+version = tk.IntVar()
+qr_code_image_src = ImageTk.PhotoImage(Image.open("qrcode1version.png"))
+qr_code_image = tk.Label(window, image=qr_code_image_src,width=72,height=72)
+qr_code_image.place(x=100,y=147)
+qr_code_image_src_v20 = ImageTk.PhotoImage(Image.open("qrcodeversion20.png"))
+qr_code_image_v20 = tk.Label(window, image=qr_code_image_src_v20)
+qr_code_image_v20.place(x=275,y=140,width=90,height=90)
+radio_button_v1 = tk.Radiobutton(window,bg="#424242", selectcolor="White", activebackground="#424242",activeforeground="white", cursor="hand2", variable=version,value=1,)
+radio_button_v1.place(x=185,y=170)
+radio_button_v2 = tk.Radiobutton(window,bg="#424242", selectcolor="White",activebackground="#424242",activeforeground="white", cursor="hand2",variable=version,value=10,)
+radio_button_v2.place(x=375,y=170)
 data = tk.StringVar()
 data_entry = tk.Entry(window,width=70,textvariable=data)
 data_entry.place(x=50,y=50)
